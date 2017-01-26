@@ -27,9 +27,9 @@ app.get('/about', (req, res) => {
 // route 
 app.get('/bad', (req, res) => {
   res.send({
-    error: 'you hit a bad endpoint foo'
-  })
-})
+    errorMsg: 'you hit a bad endpoint foo'
+  });
+});
 
 // 3. bind app to a PORT on our machine and LISTEN for requests...
 app.listen(3000);
