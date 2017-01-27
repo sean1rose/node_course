@@ -6,6 +6,8 @@ const hbs = require('hbs');
 // 1. instantiate instance of express app
 var app = express();
 
+var fs = require('fs');
+
 
 // 7. set up hbs partials - takes directory that contains all our partial files
   // to render a footer partial in hbs file: {{> footer}}
@@ -18,12 +20,35 @@ hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 
 
-// 4. middleware to set up static directory files based on public folder in root directory...
+// 4. MIDDLEWARE (app.use to set up/register middleware) to set up static directory files based on public folder in root directory...
   // express.static takes absolute path of the file we're serving up
     // __dirname uses root directory of this project (so concatenate w/ public directory)
     // this should serve up help.html in public folder to /help.html
 app.use(express.static(__dirname + '/public'));
+// Middleware - can make changes to request/response, header objects, can use to make sure someone is logged in, to respond to a request
 
+// create a logger that logs all requests that come in to server and store timestamp of requests
+app.use((req, res, next) => {
+  var now = new Date().toString();
+  // time, type of req, to what url
+  var log = `${now}: ${req.method} ${req.url}`;
+  
+  // logger to terminal
+  console.log(log);
+  // middleware to log to fs
+  fs.appendFile('server.log', log + '\n', (err) => {
+    if (err) {
+      console.log('unable to append to server.log');
+    }
+  });
+  
+  // next is used to tell express when ur middleware func is done, so can chain middlewares (serve directory, log to the screen, help w/ app performance, make a db request to make sure user is authenticated)
+  next();
+});
+
+app.use((req, res) => {
+  res.render('maintenance.hbs');
+});
 
 // 8. handlebar helper -> takes in 2 args (name of helper, func to run)
   // use it in the hbs file, not here in the server
