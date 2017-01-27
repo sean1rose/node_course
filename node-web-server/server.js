@@ -19,7 +19,7 @@ hbs.registerPartials(__dirname + '/views/partials')
   // need to create directory in project for views (views/about.hbs)
 app.set('view engine', 'hbs');
 
-
+// (middleware is executed in the order of the calls of your app.use)
 // 4. MIDDLEWARE (app.use to set up/register middleware) to set up static directory files based on public folder in root directory...
   // express.static takes absolute path of the file we're serving up
     // __dirname uses root directory of this project (so concatenate w/ public directory)
@@ -46,9 +46,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res) => {
-  res.render('maintenance.hbs');
-});
+// this middleware would override all others -stops everything else from executing
+// app.use((req, res, next) => {
+//   res.render('maintenance.hbs');
+// });
 
 // 8. handlebar helper -> takes in 2 args (name of helper, func to run)
   // use it in the hbs file, not here in the server
