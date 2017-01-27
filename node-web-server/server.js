@@ -25,6 +25,18 @@ app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
 
+// 8. handlebar helper -> takes in 2 args (name of helper, func to run)
+  // use it in the hbs file, not here in the server
+hbs.registerHelper('getCurrentYear', () => {
+  return new Date().getFullYear();
+});
+
+// use space ' ' in the template to pass in an argument  (see home for calling screamIt)
+hbs.registerHelper('screamIt', (text) => {
+  return text.toUpperCase();
+})
+
+
 // 2. register a HANDLER for an http get request
   // req -> strores info about request coming in (headers, body, etc)
   // res -> bunch of methods available so u can respond to the request (customize data sent back, set http status codes, etc);
@@ -43,8 +55,7 @@ app.get('/', (req, res) => {
   // 6. using handlebars to render home.hbs
   res.render('home.hbs', {
     pageTitle: 'Home Page',
-    welcomeMessage: 'This is the home page! WELCOME! We hope you enjoy your stay!',
-    currentYear: new Date().getFullYear()
+    welcomeMessage: 'This is the home page! WELCOME! We hope you enjoy your stay!'
   })
 
 });
@@ -59,8 +70,7 @@ app.get('/about', (req, res) => {
     // render about.hbs static file
     // 6. ***can inject dynamic data inside of template using hbs -> need to pass in an obj as 2nd argument to res.render
   res.render('about.hbs', {
-    pageTitle: 'About Page',
-    currentYear: new Date().getFullYear()
+    pageTitle: 'About Page'
   });
 });
 
