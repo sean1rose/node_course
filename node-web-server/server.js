@@ -121,4 +121,5 @@ app.listen(port, () => {
 
 // **** 2 steps to deploying to heroku
 // 1. set up port -> process.env.PORT
-// 2. set up package.json script -> 
+// 2. set up package.json script -> npm start
+// 3. heroku create
