@@ -123,3 +123,6 @@ app.listen(port, () => {
 // 1. set up port -> process.env.PORT
 // 2. set up package.json script -> npm start
 // 3. heroku create
+
+// https://morning-waters-37375.herokuapp.com/
+// or "heroku open"
