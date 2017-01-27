@@ -8,6 +8,11 @@ var app = express();
 
 var fs = require('fs');
 
+// ***FOR DEPLOYING TO HEROKU*** -> need to make port dynamic w/ an ENV variable
+// process.env is an obj that stores all our enviornment variables as key-value pairs. We want the PORT key
+  // use OR for when running locally (3000)
+const port = process.env.PORT || 3000;
+// ^ *****this is now set up to run w/ heroku deployment (process.env.PORT) or locally****
 
 // 7. set up hbs partials - takes directory that contains all our partial files
   // to render a footer partial in hbs file: {{> footer}}
@@ -107,9 +112,13 @@ app.get('/bad', (req, res) => {
   });
 });
 
-var portNumber = 3000;
 
+// ***FOR DEPLOYING TO HEROKU*** -> need to make port dynamic w/ an ENV variable
 // 3. bind app to a PORT on our machine and LISTEN for requests...
-app.listen(portNumber, () => {
-  console.log(`Server is up at port ${portNumber}`);
+app.listen(port, () => {
+  console.log(`Server is up at port ${port}`);
 });
+
+// **** 2 steps to deploying to heroku
+// 1. set up port -> process.env.PORT
+// 2. set up package.json script -> 
