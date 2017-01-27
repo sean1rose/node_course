@@ -7,6 +7,11 @@ const hbs = require('hbs');
 var app = express();
 
 
+// 7. set up hbs partials - takes directory that contains all our partial files
+  // to render a footer partial in hbs file: {{> footer}}
+hbs.registerPartials(__dirname + '/views/partials')
+
+
 // 5. using dynamic templating w/ handlebars
   // app.set lets us set express configurations using k-v pairs
   // need to create directory in project for views (views/about.hbs)
