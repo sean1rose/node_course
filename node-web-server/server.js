@@ -112,6 +112,13 @@ app.get('/bad', (req, res) => {
   });
 });
 
+app.get('/projects', (req, res) => {
+  res.render('projects.hbs', {
+    pageTitle: 'Projects Page',
+    projectMsg: 'You hit my projects page. Browse thru.'
+  });
+});
+
 
 // ***FOR DEPLOYING TO HEROKU*** -> need to make port dynamic w/ an ENV variable
 // 3. bind app to a PORT on our machine and LISTEN for requests...
@@ -126,3 +133,4 @@ app.listen(port, () => {
 
 // https://morning-waters-37375.herokuapp.com/
 // or "heroku open"
+// git push heroku
