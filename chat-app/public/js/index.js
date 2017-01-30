@@ -10,10 +10,6 @@ socket.on('connect', function () {
 
   // client side [EVENT EMITTER] (for client creating a message)...
     // client sends 1. event + 2. data
-  socket.emit('createMessage', {
-    from: 'Sean',
-    text: 'Hey this is Sean yo'
-  });
 
 });
 

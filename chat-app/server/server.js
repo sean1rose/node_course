@@ -21,21 +21,50 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  // this is emitting an event upon connection (contrived example)...
-
-  // server side [EVENT EMITTER (for new message)]
-  // create and emit an event...
-    // 1. event + 2. data obj
+  // socket.emit to user that joined from the admin (text: 'Welcome to the chat app')
   socket.emit('newMessage', {
-    from: 'Tim',
-    text: 'Hey whats goin on',
-    createdAt: new Date()
+    from: 'Admin',
+    text: 'Welcome to the Chat App!',
+    createdAt: new Date().getTime()
   });
+
+  // socket.broadcast.emit from admin (text: 'new user joined')
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user has joined',
+    createdAt: new Date().getTime()
+  });
+
 
   // server-side [EVENT LISTENER (for client create message event)]
     // expecting 1. event + 2. data
   socket.on('createMessage', (message) => {
     console.log('createMessage - ', message);
+    // want to emit new msg event to everybody so every connected user receives it
+    
+    /*
+    // server-side [EVENT EMITTER]
+    // socket.emit -> emits event to single connection
+    // io.emit -> emits to EVERY connection
+    */
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
+
+    /*
+    // server side [EVENT BROADCAST EMITTER]
+    // broadcast to everyone except myself/this socket (only other users will receive this msg)
+    socket.broadcast.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
+    */
+
+
+
   });
 
 
