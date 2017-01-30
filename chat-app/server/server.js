@@ -21,6 +21,24 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  // this is emitting an event upon connection (contrived example)...
+
+  // server side [EVENT EMITTER (for new message)]
+  // create and emit an event...
+    // 1. event + 2. data obj
+  socket.emit('newMessage', {
+    from: 'Tim',
+    text: 'Hey whats goin on',
+    createdAt: new Date()
+  });
+
+  // server-side [EVENT LISTENER (for client create message event)]
+    // expecting 1. event + 2. data
+  socket.on('createMessage', (message) => {
+    console.log('createMessage - ', message);
+  });
+
+
   // listen for disconnect
   socket.on('disconnect', () => {
     console.log('client disconnected/tab closed');
