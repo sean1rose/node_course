@@ -30,8 +30,30 @@ var newTodo = new Todo({
 
 
 // save to mongodb database
-newTodo.save().then((doc) => {
-  console.log(JSON.stringify(doc, undefined, 2));
-}, (e) => {
-  console.log('Unable to save todo');
+// newTodo.save().then((doc) => {
+//   console.log(JSON.stringify(doc, undefined, 2));
+// }, (e) => {
+//   console.log('Unable to save todo');
+// });
+
+// make user model
+// eventually, pw, todos
+// now set up email property, req'd, trim it, set type string, set min length of 1
+var User = mongoose.model('User', {
+  email: {
+    type: String,
+    required: true,
+    minlength: 1,
+    trim: true
+  }
 });
+
+var newUser = new User({
+  email: 'a@gmail.com'
+});
+
+// newUser.save().then((user) => {
+//   console.log(JSON.stringify(user, undefined, 2));
+// }, (e) => {
+//   console.log('unable to save user');
+// })
