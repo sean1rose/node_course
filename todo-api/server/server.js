@@ -1,59 +1,44 @@
-var mongoose = require('mongoose');
+// library imports
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
-// configure mongoose and connect to mongodb db 
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+// local imports
+var {mongoose} = require('./db/mongoose');
+var {User} = require('./models/user');
+var {Todo} = require('./models/todo');
 
-// create a model,specifying the attributes (in object form, aka a SCHEMA) we want a todo to have...
-var Todo = mongoose.model('Todo', {
-  text: {
-    type: String,
-    required: true,
-    minlength: 1,
-    trim: true
-  },
-  completed: {
-    type: Boolean,
-    default: false
-  },
-  completedAt: {
-    type: Number,
-    default: null
-  }
-});
-// schema vs model: http://stackoverflow.com/questions/22950282/mongoose-schema-vs-model
+const port = process.env.PORT || 3000;
 
-// create a new todo instance
-var newTodo = new Todo({
-  text: '  cook dinner      '
-});
+var app = express();
+
+// MIDDLEWARE = bodyParser.json() function
+// bodyParser takes [json body data] that was passed from the client and converts it to an object and attaches it to the request object (request.body)
+  // allows you to send json data and then access it in route handlers via 'req.body'
+app.use(bodyParser.json());
+// can now send json to express app (can access it in route-callback functions)
 
 
-// save to mongodb database
-// newTodo.save().then((doc) => {
-//   console.log(JSON.stringify(doc, undefined, 2));
-// }, (e) => {
-//   console.log('Unable to save todo');
-// });
+// CONFIGURE ROUTES
 
-// make user model
-// eventually, pw, todos
-// now set up email property, req'd, trim it, set type string, set min length of 1
-var User = mongoose.model('User', {
-  email: {
-    type: String,
-    required: true,
-    minlength: 1,
-    trim: true
-  }
+// POST /todos
+  // send resouce as body -> send (json object) w/ text property to server
+  //  server will create new model, then send that completed model (id + properties) back to client
+// app.post(url, callback)
+app.post('/todos', (req, res) => {
+  // POST HANDLER callback func -> create the todo using the info passed from the user on request.body
+  // create todo from request data
+  var todo = new Todo({
+    text: req.body.text
+  });
+  // save todo to mongodb using mongoose
+  todo.save().then((doc) => {
+    // send the saved doc back to the user in response
+    res.send(doc);
+  }, (e) => {
+    res.send(e);
+  });
 });
 
-var newUser = new User({
-  email: 'a@gmail.com'
+app.listen(port, () => {
+  console.log(`Server is lit on port ${port}`);
 });
-
-// newUser.save().then((user) => {
-//   console.log(JSON.stringify(user, undefined, 2));
-// }, (e) => {
-//   console.log('unable to save user');
-// })
