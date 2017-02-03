@@ -41,6 +41,18 @@ app.post('/todos', (req, res) => {
 });
 // Can test ^ this post todo endpoint using postman
 
+
+// GET /todos route handler...
+app.get('/todos', (req, res) => {
+  // grab all todos from db
+  Todo.find().then((todos) => {
+    // send it back as an obj rather than array, for more flexibility to modify/add properties
+    res.send({todos});
+  }, (e) => {
+    res.status(400).send(e);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is lit on port ${port}`);
 });
