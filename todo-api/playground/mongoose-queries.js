@@ -62,5 +62,5 @@ User.findById(userId).then((user) => {
   if (!user) {
     return console.log('user not found');
   }
-  console.log('user found! - ', user);
+  console.log(JSON.stringify(user, undefined, 2));
 }).catch((e) => console.log('error - ', e));
