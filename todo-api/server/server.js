@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 // local imports
+var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {User} = require('./models/user');
 var {Todo} = require('./models/todo');
@@ -52,6 +53,37 @@ app.get('/todos', (req, res) => {
     res.status(400).send(e);
   });
 });
+
+
+// GET individual /todos/:id
+  // need to use a URL PARAMATER (:id) -> allows us to query by id passed in
+app.get('/todos/:id', (req, res) => {
+  // need to use _ off of req obj (req.params === {"id": "123"})
+  // can access url parameter using 'req.params.id'
+  var id = req.params.id;
+  
+  // validate id using 'isValid'
+  if (!ObjectID.isValid(id)){
+    // if not valid -> return out w/ a 404, send back empty body
+    return res.status(404).send();
+  } else {
+    // if valid, query db using findById looking for matching doc
+    Todo.findById(id).then((todo) => {
+      if (!todo){
+        // if no todo -> (call succeeded by id not found in collection) -> send back 404 w/ empty body
+        return res.status(404).send();
+      }
+      // if success..
+        // if todo -> send it back, as an obj w/ todo property...
+     res.send({todo});
+    }).catch((e) => {
+      // if error -> send back 400, saying request not valid + send back nothing
+      res.status(400).send();
+    });
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server is lit on port ${port}`);
