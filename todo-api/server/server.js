@@ -57,6 +57,7 @@ app.get('/todos', (req, res) => {
 
 // GET individual /todos/:id
   // need to use a URL PARAMATER (:id) -> allows us to query by id passed in
+  // http://stackoverflow.com/questions/20089582/how-to-get-url-parameter-in-express-node-js
 app.get('/todos/:id', (req, res) => {
   // need to use _ off of req obj (req.params === {"id": "123"})
   // can access url parameter using 'req.params.id'
